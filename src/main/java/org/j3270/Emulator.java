@@ -9,6 +9,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.j3270.command.ConnectCommand;
 import org.j3270.command.ExpectTextCommand;
+import org.j3270.command.IsConnectedCommand;
 import org.j3270.command.MoveCursorCommand;
 import org.j3270.command.SendKeysCommand;
 import org.j3270.command.SendStringCommand;
@@ -16,7 +17,6 @@ import org.j3270.command.WaitCommand;
 
 public class Emulator implements Closeable, AutoCloseable {
 
-  private int scriptPort;
   private ExecutorService executorService;
   private boolean ownsExecutor = false;
 
@@ -32,22 +32,18 @@ public class Emulator implements Closeable, AutoCloseable {
     ownsExecutor = true;
   }
 
-  public Emulator(int scriptPort, ExecutorService executorService) {
-    super();
-    this.scriptPort = scriptPort;
-    this.executorService = executorService;
-  }
-
   public Emulator(ExecutorService executorService) {
     this(3270, executorService);
   }
 
-  public void start() throws UnknownHostException, IOException, TimeoutException {
-    start(false);
+  public Emulator(int scriptPort, ExecutorService executorService) {
+    super();
+    this.executorService = executorService;
+    this.runner = new Emulator3270Runner(scriptPort);
+    this.commander = new TerminalCommander(scriptPort);
   }
 
-  public void start(boolean visible) throws UnknownHostException, IOException, TimeoutException {
-    this.runner = new Emulator3270Runner(visible, scriptPort);
+  public void start() throws UnknownHostException, IOException, TimeoutException {
     this.executorService.submit(runner);
 
     try {
@@ -55,8 +51,6 @@ public class Emulator implements Closeable, AutoCloseable {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
-
-    this.commander = new TerminalCommander(scriptPort);
     this.commander.connect();
   }
 
@@ -89,24 +83,56 @@ public class Emulator implements Closeable, AutoCloseable {
     }
   }
 
+  public boolean isNvt() {
+    return this.runner.isNvt();
+  }
+
+  public void setNvt(boolean nvt) {
+    this.runner.setNvt(nvt);
+  }
+
+  public boolean isVisible() {
+    return this.runner.isVisible();
+  }
+
+  public void setVisible(boolean visible) {
+    this.runner.setVisible(visible);
+  }
+
+  public String getModel() {
+    return this.runner.getModel();
+  }
+
+  public void setModel(String model) {
+    this.runner.setModel(model);
+  }
+
   public void waitUnlock() {
     waitUnlock(0);
   }
 
-  public void waitUnlock(int timeoutInSeconds) {
-    execute(new WaitCommand(timeoutInSeconds, "Unlock"));
+  public boolean waitUnlock(int timeoutInSeconds) {
+    return execute(new WaitCommand(timeoutInSeconds, "Unlock"));
   }
 
-  public void waitField(int timeoutInSeconds) {
-    execute(new WaitCommand(timeoutInSeconds, "InputField"));
+  public boolean waitField(int timeoutInSeconds) {
+    return execute(new WaitCommand(timeoutInSeconds, "InputField"));
   }
 
   public void waitField() {
     waitField(0);
   }
 
-  public void expectText(String text, int timeoutInSeconds) {
-    execute(new ExpectTextCommand(text, timeoutInSeconds));
+  public boolean waitNVTMode(int timeoutInSeconds) {
+    return execute(new WaitCommand(timeoutInSeconds, "NVTMode"));
+  }
+
+  public void expectText(String text) {
+    execute(new ExpectTextCommand(text));
+  }
+
+  public boolean expectText(String text, int timeoutInSeconds) {
+    return execute(new ExpectTextCommand(text, timeoutInSeconds));
   }
 
   public void fillField(int row, int col, String txt) {
@@ -123,12 +149,16 @@ public class Emulator implements Closeable, AutoCloseable {
     return execute(new ConnectCommand(hostname));
   }
 
-  public void disconnect() {
+  public boolean disconnect() {
     execute(new SendKeysCommand("Disconnect"));
-    execute(new SendKeysCommand("Wait(Disconnect)"));
+    return execute(new WaitCommand("Disconnect"));
   }
 
-  private <V> V execute(Command<V> command) {
+  public boolean isConnected() {
+    return execute(new IsConnectedCommand());
+  }
+
+  protected <V> V execute(Command<V> command) {
     if (this.commander == null) {
       throw new IllegalStateException("Emulator not started.");
     }

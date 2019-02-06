@@ -1,7 +1,8 @@
 package org.j3270.command;
 
-public class ExpectTextCommand extends AbstractCommand<Void> {
+public class ExpectTextCommand extends AbstractCommand<Boolean> {
 
+  private boolean found = false;
   private String text;
   private int timeout;
 
@@ -18,18 +19,24 @@ public class ExpectTextCommand extends AbstractCommand<Void> {
   }
 
   @Override
-  protected Void getOutput() {
-    return null;
+  protected Boolean getOutput() {
+    return found;
   }
 
   @Override
   protected String getCommand() {
     if (timeout > 0) {
-      return "Expect(" + text + "," + timeout + ")";
+      return "Expect(\"" + text + "\"," + timeout + ")";
     } else {
-      return "Expect(" + text + ")";
+      return "Expect(\"" + text + "\")";
     }
 
+  }
+
+  @Override
+  protected void processResult(String result) {
+    found = result.equals("ok");
+    super.processResult(result);
   }
 
 }

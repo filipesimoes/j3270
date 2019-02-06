@@ -1,7 +1,8 @@
 package org.j3270.command;
 
-public class WaitCommand extends AbstractCommand<Void> {
+public class WaitCommand extends AbstractCommand<Boolean> {
 
+  private boolean success = false;
   private String what;
   private int timeout;
 
@@ -18,8 +19,8 @@ public class WaitCommand extends AbstractCommand<Void> {
   }
 
   @Override
-  protected Void getOutput() {
-    return null;
+  protected Boolean getOutput() {
+    return success;
   }
 
   @Override
@@ -29,6 +30,12 @@ public class WaitCommand extends AbstractCommand<Void> {
     } else {
       return "Wait(" + what + ")";
     }
+  }
+
+  @Override
+  protected void processResult(String result) {
+    success = result.equals("ok");
+    super.processResult(result);
   }
 
 }

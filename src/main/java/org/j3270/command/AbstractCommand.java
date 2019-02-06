@@ -3,12 +3,18 @@ package org.j3270.command;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.j3270.Command;
 
 public abstract class AbstractCommand<V> implements Command<V> {
 
-  private static final String dataPrefix = "data:";
+  private static final Logger LOGGER = Logger.getLogger(AbstractCommand.class.getSimpleName());
+
+  private static final String DATA_PREFIX = " data:";
+
+  private String lastData;
 
   @Override
   public V execute(Writer writer, BufferedReader reader) {
@@ -30,7 +36,11 @@ public abstract class AbstractCommand<V> implements Command<V> {
     while (!finished) {
       String line = reader.readLine();
 
-      if (line.startsWith(dataPrefix)) {
+      LOGGER.log(Level.FINE, line);
+
+      if (line.startsWith(DATA_PREFIX)) {
+        line = line.replaceFirst(DATA_PREFIX, "");
+        this.lastData = line;
         processData(line);
       } else if (!statusFound) {
         processStatus(line);
@@ -46,7 +56,6 @@ public abstract class AbstractCommand<V> implements Command<V> {
   }
 
   protected void processData(String data) {
-    // optional implementation.
   }
 
   protected void processStatus(String status) {
@@ -54,7 +63,9 @@ public abstract class AbstractCommand<V> implements Command<V> {
   }
 
   protected void processResult(String result) {
-    // optional implementation.
+    if (result.equals("error")) {
+      throw new CommandException(lastData);
+    }
   }
 
   protected abstract V getOutput();
