@@ -11,16 +11,17 @@ mvn clean install
 
 # Usage
 ```
-Emulator emulator = new Emulator();
-emulator.connect();
+try (Emulator emulator = new Emulator()) {
+  emulator.connect();
 
-emulator.connect("3270host.example.com");
-emulator.waitField(10);
+  emulator.connect("3270host.example.com");
+  emulator.waitField(10);
 
-emulator.fillField(17, 23, 'mylogin', 8);
-emulator.fillField(18, 23, 'mypass', 8);
-emulator.sendEnter();
+  emulator.fillField(17, 23, "mylogin");
+  emulator.fillField(18, 23, "mypass");
+  emulator.sendEnter();
 
-emulator.waitField(10);
-emulator.disconnect();
+  emulator.waitField(10);
+  emulator.disconnect();
+}
 ```
