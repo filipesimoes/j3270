@@ -12,8 +12,7 @@ mvn clean install
 # Usage
 ```
 try (Emulator emulator = new Emulator()) {
-  emulator.connect();
-
+  emulator.start();
   emulator.connect("3270host.example.com");
   emulator.waitField(10);
 
