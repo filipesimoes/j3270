@@ -3,10 +3,13 @@ package org.j3270;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
+import org.j3270.command.AsciiRCLCommand;
+import org.j3270.command.AsciiRCRCCommand;
 import org.j3270.command.ConnectCommand;
 import org.j3270.command.ExpectTextCommand;
 import org.j3270.command.IsConnectedCommand;
@@ -139,6 +142,27 @@ public class Emulator implements Closeable, AutoCloseable {
     execute(new MoveCursorCommand(row, col));
     execute(new SendKeysCommand("DeleteField"));
     execute(new SendStringCommand(txt));
+  }
+
+  public String getText(int row, int col, int length) {
+    return execute(new AsciiRCLCommand(row, col, length));
+  }
+
+  public List<String> getText(int row1, int col1, int row2, int col2) {
+    return execute(new AsciiRCRCCommand(row1, col1, row2, col2));
+  }
+
+  public String getTextInterval(int row1, int col1, int col2) {
+    List<String> result = execute(new AsciiRCRCCommand(row1, col1, row1, col2));
+    if (result != null) {
+      return result.get(0);
+    }
+    return null;
+  }
+
+  public boolean containsText(int row, int col, String text) {
+    String txt = getText(row, col, text.length());
+    return text.equals(txt);
   }
 
   public void sendEnter() {
