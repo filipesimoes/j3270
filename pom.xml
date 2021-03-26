@@ -29,9 +29,9 @@
 
     <scm>
         <url>https://github.com/filipesimoes/j3270</url>
-        <connection>scm:git:https://github.com/filipesimoes/j3270.git</connection>
-        <developerConnection>scm:git:https://github.com/filipesimoes/j3270.git</developerConnection>
-        <tag>0.1.0</tag>
+        <connection>scm:git:ssh://git@github.com/filipesimoes/j3270.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/filipesimoes/j3270.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
 	<dependencies>
