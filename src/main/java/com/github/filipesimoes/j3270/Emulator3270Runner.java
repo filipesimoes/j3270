@@ -1,4 +1,4 @@
-package org.j3270;
+package com.github.filipesimoes.j3270;
 
 import java.io.IOException;
 import java.util.ArrayList;

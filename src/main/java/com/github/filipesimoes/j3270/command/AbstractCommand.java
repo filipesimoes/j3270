@@ -1,4 +1,4 @@
-package org.j3270.command;
+package com.github.filipesimoes.j3270.command;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.j3270.Command;
+import com.github.filipesimoes.j3270.Command;
 
 public abstract class AbstractCommand<V> implements Command<V> {
 

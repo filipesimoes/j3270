@@ -1,4 +1,4 @@
-package org.j3270.command;
+package com.github.filipesimoes.j3270.command;
 
 public class MoveCursorCommand extends AbstractCommand<Void> {
 

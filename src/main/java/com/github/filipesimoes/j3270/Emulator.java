@@ -1,4 +1,4 @@
-package org.j3270;
+package com.github.filipesimoes.j3270;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -8,15 +8,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeoutException;
 
-import org.j3270.command.AsciiRCLCommand;
-import org.j3270.command.AsciiRCRCCommand;
-import org.j3270.command.ConnectCommand;
-import org.j3270.command.ExpectTextCommand;
-import org.j3270.command.IsConnectedCommand;
-import org.j3270.command.MoveCursorCommand;
-import org.j3270.command.SendKeysCommand;
-import org.j3270.command.SendStringCommand;
-import org.j3270.command.WaitCommand;
+import com.github.filipesimoes.j3270.command.AsciiRCLCommand;
+import com.github.filipesimoes.j3270.command.AsciiRCRCCommand;
+import com.github.filipesimoes.j3270.command.ConnectCommand;
+import com.github.filipesimoes.j3270.command.ExpectTextCommand;
+import com.github.filipesimoes.j3270.command.IsConnectedCommand;
+import com.github.filipesimoes.j3270.command.MoveCursorCommand;
+import com.github.filipesimoes.j3270.command.SendKeysCommand;
+import com.github.filipesimoes.j3270.command.SendStringCommand;
+import com.github.filipesimoes.j3270.command.WaitCommand;
 
 public class Emulator implements Closeable, AutoCloseable {
 
