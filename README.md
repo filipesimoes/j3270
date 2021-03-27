@@ -2,7 +2,7 @@
 
 A Java Wrapper for x3270 (IBM 3270 terminal emulator) based on [py3270](https://github.com/py3270/py3270).
 
-It is an Java API for x3270 (Linux) or s3270 (Windows) subprocess.
+It is a Java API for x3270 (Linux) or s3270 (Windows) subprocess.
 # Compiling
 
 ```
