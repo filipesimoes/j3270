@@ -28,3 +28,5 @@ try (Emulator emulator = new Emulator()) {
   emulator.disconnect();
 }
 ```
+
+If you need more details, read [Emulator](https://github.com/filipesimoes/j3270/blob/4e320a94b5260bcae3be955fb987f7af1c73279f/src/main/java/com/github/filipesimoes/j3270/Emulator.java) class.
