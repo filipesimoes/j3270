@@ -1,6 +1,5 @@
 # j3270
-Java Wrapper for x3270 (IBM 3270 terminal emulator)
-
+Java Wrapper for x3270 (IBM 3270 terminal emulator) [![Release](https://github.com/filipesimoes/j3270/actions/workflows/release.yml/badge.svg)](https://github.com/filipesimoes/j3270/actions/workflows/release.yml) [![Maven Central](https://img.shields.io/maven-central/v/com.github.filipesimoes/j3270.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.filipesimoes%22%20AND%20a:%22j3270%22)
 # Compiling
 
 ```
