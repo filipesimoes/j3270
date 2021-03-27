@@ -1,5 +1,8 @@
-# j3270
-Java Wrapper for x3270 (IBM 3270 terminal emulator) [![Release](https://github.com/filipesimoes/j3270/actions/workflows/release.yml/badge.svg)](https://github.com/filipesimoes/j3270/actions/workflows/release.yml) [![Maven Central](https://img.shields.io/maven-central/v/com.github.filipesimoes/j3270.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.filipesimoes%22%20AND%20a:%22j3270%22)
+# j3270 [![Release](https://github.com/filipesimoes/j3270/actions/workflows/release.yml/badge.svg)](https://github.com/filipesimoes/j3270/actions/workflows/release.yml) [![Maven Central](https://img.shields.io/maven-central/v/com.github.filipesimoes/j3270.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.filipesimoes%22%20AND%20a:%22j3270%22)
+
+A Java Wrapper for x3270 (IBM 3270 terminal emulator) based on [py3270](https://github.com/py3270/py3270).
+
+It is an Java API for x3270 (Linux) or s3270 (Windows) subprocess.
 # Compiling
 
 ```
@@ -9,6 +12,8 @@ mvn clean install
 ```
 
 # Usage
+
+It is necessary to have installed and in your path [x3270](http://x3270.bgp.nu/) emulator.
 ```
 try (Emulator emulator = new Emulator()) {
   emulator.start();
